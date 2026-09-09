@@ -1,13 +1,9 @@
----
 Title: Microsoft Azure Virtual Machine documentation contributor
 Description: The guide describes how user profile bloat is a critical deiver of storage degradation and spiraling infrastrucute costs.
 Author: Rodrigo Aurelio Criscuolo
 MS.Author: RodrigoACriscuolo
 MS.Date 09/09/2026
 MS.Topic: Contributor-Guide
-MS.Prod:
-MS.custom:
----
 
 ### Summary
 In modern enterprise virtualized environments-specifically Azure Virtual Machines, and hybrid-joined VMware VDI - user profile bloat is a critical driver of storage degradation and spiraling infrastructure costs. By default, cloud synchronization engines like Microsoft OneDrive are optimized for dedicate physical endpoints, not multi-session or non-persistent virtual environments, Left unmanaged, OneDrive synchronization will rapidly expand user profile containers (VHDX /VMDK), leading to logon delays, disk exhaustion, and inflated cloud storage fees.
