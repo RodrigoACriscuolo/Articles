@@ -15,12 +15,16 @@ This technical article outlines the architectural strategy and standard operatio
 
 ### 1. Architectural Architecture & Pillars
 To implement a stable, cost-effective virtualization layer, your engineering roadmap must pivot on for core Microsoft best practices:
+
 ## Pillar 1: Per-Machine Binary Decoupling
 The default consumer configuration install OneDrive within the user's volatile local profile (%localappdata%\Microsoft\OneDrive). On multi-session. Moving the baseline installation to the system layer (C:\ProgramFiles) isolates configuration state from executable storage, reducing baseline profile sizes.
+
 ## Pillar 2: Device-Centric Loopback Enforcement
 Targeting storage profiles to User Security Groups in Active Directory causes configuration drift when users transition between physical laptops and virtual. Utilizing Group Policy Object (GPO) Loopback Processing in Replace Mode applies policies directly to the Virtual Machine container (OU). This guarantees that strict virtualization constraints take precedence the moment a user initiates a remote session.
+
 ## Pillar 3: Dynamic Sector Compaction
 Enforcing OneDrive "Files On-Demand" converts files into o-byte sparse file pointers. However, while cloud file dhydration flags space as unallocated within the virtual machine, the underlying Virtual Hard Disk (VHDX) file hosted on Azure Files or VMware vSAN remains bloated. Dynamic Sector compaction forces the profile attachment engine to reclaim unallocated blocks during user logoff.
+
 ## Fillar 4: Risk Isolation Boundaries
 Because external consultants present higher data security risks, the architecture enforces deep multi-tenant restrictions. Blocking synchronization with non-corporate tenants prevents unauthorized data exfiltration while maintaing single sign-on (SSO) continuity via Microsoft Entra ID.
 
@@ -137,3 +141,7 @@ This architecture guide aligns directly with official enterprise documentation f
 * Microsoft Learn Virtualization Engineering: Standards for deploying OneDrive per-machine instances (/allusers) across enterprise multi-session environments.
 * FSLogix Container Guidance: Architectur benchmarks detailing VHDX structural growth behavior and the implementation constraints of the VHDCompactDisk engine.
 
+
+https://techcommunity.microsoft.com/discussions/agent-365-discussions/fslogix-profile-analyzer-%E2%80%93-identify-bloated-profiles-and-get-actionable-recommen/4544227
+https://github.com/ZoeyABT/FSLogixProfileReport
+https://techresolve.blog/2026/03/09/max-user-profiles-disable/
