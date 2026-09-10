@@ -1,25 +1,25 @@
 Title: Microsoft Azure Virtual Machine documentation contributor
-Description: The guide describes how user profile bloat is a critical deiver of storage degradation and spiraling infrastrucute costs.
+Description: The guide describes how user profile bloat is a critical driver of storage degradation and spiraling infrastructure costs.
 Author: Rodrigo Aurelio Criscuolo
-MS.Author: RodrigoACriscuolo
-MS.Date 09/09/2026
-MS.Topic: User profile storage on virtual machines is growing, creating a problem when the profile is synchronized with MS OneDrive.
+MS. Author: RodrigoACriscuolo
+MS. Date 09/09/2026
+MS. Topic: User profile storage on virtual machines is growing, creating a problem when the profile is synchronized with MS OneDrive.
 
 ### Summary
-In modern enterprise virtualized environments-specifically Azure Virtual Machines, and hybrid-joined VMware VDI - user profile bloat is a critical driver of storage degradation and spiraling infrastructure costs. By default, cloud synchronization engines like Microsoft OneDrive are optimized for dedicate physical endpoints, not multi-session or non-persistent virtual environments, Left unmanaged, OneDrive synchronization will rapidly expand user profile containers (VHDX /VMDK), leading to logon delays, disk exhaustion, and inflated cloud storage fees.
-This technical article outlines the architectural strategy and standard operation procedures (SOP) to systematically restrict, clean and compress OneDrive file footprints. This architecture establishes a dual-tier policy framework that balances operational velocity for internal engineerng teams against rigorous cost containment and data exfiltration controls for external consulting workforces.
+In modern enterprise virtualized environments—specifically Azure Virtual Machines, and hybrid-joined VMware VDI - user profile bloat is a critical driver of storage degradation and spiraling infrastructure costs. By default, cloud synchronization engines like Microsoft OneDrive are optimized for dedicated physical endpoints, not multi-session or non-persistent virtual environments. Left unmanaged, OneDrive synchronization will rapidly expand user profile containers (VHDX /VMDK), leading to log on delays, disk exhaustion, and inflated cloud storage fees.
+This technical article outlines the architectural strategy and standard operation procedures (SOP) to systematically restrict, clean and compress OneDrive file footprints. This architecture establishes a dual-tier policy framework that balances operational velocity for internal engineering teams against rigorous cost containment and data exfiltration controls for external consulting workforces.
 
 ### 1. Architectural Architecture & Pillars
-To implement a stable, cost-effective virtualization layer, your engineering roadmap must pivot on for core Microsoft best practices:
+To implement a stable, cost-effective virtualization layer, your engineering roadmap must pivot on core Microsoft best practices:
 
 ## Pillar 1: Per-Machine Binary Decoupling
-The default consumer configuration install OneDrive within the user's volatile local profile (%localappdata%\Microsoft\OneDrive). On multi-session. Moving the baseline installation to the system layer (C:\ProgramFiles) isolates configuration state from executable storage, reducing baseline profile sizes.
+The default consumer configuration installs OneDrive within the user's volatile local profile (%localappdata%\Microsoft\OneDrive). On multi-session. Moving the baseline installation to the system layer (C:\ProgramFiles) isolates the configuration state from executable storage, reducing baseline profile sizes.
 
 ## Pillar 2: Device-Centric Loopback Enforcement
-Targeting storage profiles to User Security Groups in Active Directory causes configuration drift when users transition between physical laptops and virtual. Utilizing Group Policy Object (GPO) Loopback Processing in Replace Mode applies policies directly to the Virtual Machine container (OU). This guarantees that strict virtualization constraints take precedence the moment a user initiates a remote session.
+Targeting storage profiles to User Security Groups in Active Directory causes configuration drift when users transition between physical laptops and virtual. Utilizing Group Policy Object (GPO), Loopback Processing in Replace Mode applies policies directly to the Virtual Machine container (OU). This guarantees that strict virtualization constraints take precedence the moment a user initiates a remote session.
 
 ## Pillar 3: Dynamic Sector Compaction
-Enforcing OneDrive "Files On-Demand" converts files into o-byte sparse file pointers. However, while cloud file dhydration flags space as unallocated within the virtual machine, the underlying Virtual Hard Disk (VHDX) file hosted on Azure Files or VMware vSAN remains bloated. Dynamic Sector compaction forces the profile attachment engine to reclaim unallocated blocks during user logoff.
+Enforcing OneDrive "Files On-Demand" converts files into o-byte sparse file pointers. However, while cloud file dehydration flags space as unallocated within the virtual machine, the underlying Virtual Hard Disk (VHDX) file hosted on Azure Files or VMware vSAN remains bloated. Dynamic Sector compaction forces the profile attachment engine to reclaim unallocated blocks during user logoff.
 
 ## Fillar 4: Risk Isolation Boundaries
 Because external consultants present higher data security risks, the architecture enforces deep multi-tenant restrictions. Blocking synchronization with non-corporate tenants prevents unauthorized data exfiltration while maintaing single sign-on (SSO) continuity via Microsoft Entra ID.
